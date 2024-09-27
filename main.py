@@ -36,6 +36,15 @@ def secantMethod(f, x0, x1, epsilon=1e-6, max_iterations=100):
         return x2
     
 given_functions = [
-    (x) => 1 - 2 * x * Math.exp((-x)/ 2), (x) => (x - 2) * Math.exp((-x) / 2), 0
+    (lambda x: 1 - 2 * x * math.exp((-x)/ 2), lambda x: (x - 2) * math.exp((-x) / 2), 0),
+    (lambda x: 5 - x ** (-1), lambda x: x ** -2, 0.25),
+    (lambda x: (x ** 3) - (2 * x) - 5, lambda x: (3 * x ** 2) - 2, 2),
+    (lambda x: math.exp(x) - 2, lambda x: math.exp(x), 1),
+    (lambda x: x - math.exp(-x), lambda x: 1 + math.exp(-x), 1),
+    (lambda x: (x ** 6) - x - 1, lambda x: (6 * x ** 5) - 1, 1),
+    (lambda x: x ** 2 - math.sin(x), lambda x: 2 * x - math.cos(x), 0.5),
+    (lambda x: x ** 3 - 2, lambda x: 3 * x ** 2, 1),
+    (lambda x: x + math.tan(x), lambda x: 1 + (math.sec(x)) ** 2, 3),
+    (lambda x: 2 - (x ** (-1) * math.log(x)), lambda x: (math.log(x) - 1) / x ** 2, (1 / 3)),
 ]
     

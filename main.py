@@ -47,4 +47,13 @@ given_functions = [
     (lambda x: x + math.tan(x), lambda x: 1 + (math.sec(x)) ** 2, 3),
     (lambda x: 2 - (x ** (-1) * math.log(x)), lambda x: (math.log(x) - 1) / x ** 2, (1 / 3)),
 ]
+
+x = 0
+print(f"\n Iteration    a   b   c   f(c)")
+for function in given_functions:
+    x += 1
+    root = bisectionMethod(function[0], function[2], function[2] + 0.5)
+    print(f"{x}    {function[2]}   {function[2] + 0.5}   {root}   {function[0](root)}")
+    # newtonMethod(function[0], function[1], function[2])
+    # secantMethod(function[0], function[2], function[2] + 0.5)
     

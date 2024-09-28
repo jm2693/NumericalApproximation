@@ -124,10 +124,12 @@ def bisectionMethod(f, a, b, epsilon=1e-6, max_iterations=100, result=None):
         result = []
     if max_iterations == 0 or f(a) * f(b) >= 0:
         return result
+    
     c = (a + b) / 2
     fc = f(c)
+    
     result.append((len(result) + 1, a, b, c, fc))
-    if abs(fc) < epsilon or abs(b - a) < epsilon:
+    if abs(b - a) < epsilon:
         return result
     if f(a) * fc < 0:
         return bisectionMethod(f, a, c, epsilon, max_iterations - 1, result)
@@ -143,16 +145,12 @@ def newtonMethod(f, df, x0, epsilon=1e-6, max_iterations=100, result=None):
     try:
         fx0 = f(x0)
         dfx0 = df(x0)
+        x1 = x0 - fx0 / dfx0
+        fx1 = f(x1)
     except (ValueError, ZeroDivisionError):
         return result
-    
-    result.append((len(result) + 1, x0, fx0))
-    if abs(fx0) < epsilon:
-        return result
-    if dfx0 == 0:
-        return result
-    
-    x1 = x0 - fx0 / dfx0
+
+    result.append((len(result) + 1, x0, x1, fx1))
     if abs(x1 - x0) < epsilon:
         return result
     return newtonMethod(f, df, x1, epsilon, max_iterations - 1, result)
@@ -185,7 +183,7 @@ given_functions = [
     (lambda x: x**2 - math.sin(x), lambda x: 2*x - math.cos(x), 0.5, 1, 1),
     (lambda x: x**3 - 2, lambda x: 3*x**2, 1, 1.5, 1.3),
     (lambda x: x + math.tan(x), lambda x: 1 + (1 / math.cos(x))**2, 3, 3.5, 1.8),
-    (lambda x: 2 - x**(-1)*math.log(x), lambda x: (math.log(x) - 1) / x**2, 1/3, 0.5, 0.5),
+    (lambda x: 2 - x**(-1)*math.log(x), lambda x: (math.log(x) - 1) / x**2, 1/3, 0.4, 5),
 ]
 
 question_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
@@ -193,27 +191,24 @@ def print_table(f, x0, df=None, x1=None, b=None, method_name="newton"):
     if method_name == "bisection":
         print(f"\nBisection Method\n{'Iteration':^15}{'a':^15}{'b':^15}{'c':^15}{'f(c)':^15}")
         list_of_results = bisectionMethod(f, x0, b)
-        if len(list_of_results) == 0:
-            print("No Root Found")
-        else: 
-            for i, a, b, c, fc in list_of_results:
-                print(f"{i:^15}{a:<15.7f}{b:<15.7f}{c:<15.7f}{fc:<15.7f}")
+        for i, a, b, c, fc in list_of_results:
+            print(f"{i:^15}{a:<15.7f}{b:<15.7f}{c:<15.7f}{fc:<15.7f}")
+        if len(list_of_results) == 0 or not list_of_results[-1][3] < 10e-6:
+            print(f"{'No Roots':^70}")
     elif method_name == "secant":
         print(f"\nSecant's Method\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'x2':^15}{'f(x2)':^15}")
         list_of_results = secantMethod(f, x0, x1)
-        if len(list_of_results) == 0:
-            print("No Root Found")
-        else:   
-            for i, x0, x1, x2, fx2 in list_of_results:
-                print(f"{i:^15}{x0:<15.7f}{x1:<15.7f}{x2:<15.7f}{fx2:<15.7f}")
+        for i, x0, x1, x2, fx2 in list_of_results:
+            print(f"{i:^15}{x0:<15.7f}{x1:<15.7f}{x2:<15.7f}{fx2:<15.7f}")
+        if len(list_of_results) == 0 or not list_of_results[-1][4] < 10e-6:
+            print(f"{'No Roots':^70}")
     elif method_name == "newton":
-        print(f"\nNewton's Method\n{'Iteration':^15}{'x':^15}{'f(x)':^15}")
+        print(f"\nNewton's Method\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'f(x1)':^15}")
         list_of_results = newtonMethod(f, df, x0)
-        if len(list_of_results) == 0:
-            print("No Root Found")
-        else: 
-            for i, x, fx in list_of_results:
-                print(f"{i:^15}{x:<15.7f}{fx:<15.7f}")
+        for i, x0, x1, fx1 in list_of_results:
+            print(f"{i:^15}{x0:<15.7f}{x1:<15.7f}{fx1:<15.7f}")
+        if len(list_of_results) == 0 or not list_of_results[-1][3] < 10e-6:
+            print(f"{'No Roots':^70}")
 
 for i, (f, df, x0, x1, b) in enumerate(given_functions):
     print(f"\nPart {question_list[i]}:")
@@ -224,3 +219,4 @@ for i, (f, df, x0, x1, b) in enumerate(given_functions):
     # SECANT METHOD
     print_table(f, x0, x1=x1, method_name="secant")
     print("=" * 70)
+    

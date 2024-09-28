@@ -15,6 +15,7 @@ def bisectionMethod(f, a, b, epsilon=1e-6, max_iterations=100):
     elif f(c) * f(b) < 0:
         return bisectionMethod(f, c, b, epsilon,  max_iterations - 1)
     
+# this is my implemented Newton's method
 def newtonMethod(f, df, x0, epsilon=1e-6, max_iterations=100):
     if max_iterations == 0:
         return None
@@ -26,6 +27,7 @@ def newtonMethod(f, df, x0, epsilon=1e-6, max_iterations=100):
     
     newtonMethod(f, df, x0, epsilon, max_iterations-1)
     
+# this is my implmented secant method
 def secantMethod(f, x0, x1, epsilon=1e-6, max_iterations=100):
     if max_iterations == 0:
         return None
@@ -48,12 +50,4 @@ given_functions = [
     (lambda x: 2 - (x ** (-1) * math.log(x)), lambda x: (math.log(x) - 1) / x ** 2, (1 / 3)),
 ]
 
-x = 0
-print(f"\n Iteration    a   b   c   f(c)")
-for function in given_functions:
-    x += 1
-    root = bisectionMethod(function[0], function[2], function[2] + 0.5)
-    print(f"{x}    {function[2]}   {function[2] + 0.5}   {root}   {function[0](root)}")
-    # newtonMethod(function[0], function[1], function[2])
-    # secantMethod(function[0], function[2], function[2] + 0.5)
-    
+print(bisectionMethod(given_functions[9][0], given_functions[9][2], 0.1))

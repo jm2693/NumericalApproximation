@@ -1,7 +1,8 @@
 import math
 
+# each function uses a list of tuples to store iterations
 # my implementation of bisection method
-def bisectionMethod(f, a, b, epsilon=1e-6, max_iterations=100, result=None):
+def bisectionMethod(f, a, b, epsilon=10e-6, max_iterations=100, result=None):
     if result is None:
         result = []
     if max_iterations == 0 or f(a) * f(b) >= 0:
@@ -19,7 +20,7 @@ def bisectionMethod(f, a, b, epsilon=1e-6, max_iterations=100, result=None):
         return bisectionMethod(f, c, b, epsilon, max_iterations - 1, result)
 
 # my implementation of newton's method
-def newtonMethod(f, df, x0, epsilon=1e-6, max_iterations=100, result=None):
+def newtonMethod(f, df, x0, epsilon=10e-6, max_iterations=100, result=None):
     if result is None:
         result = []
     if max_iterations == 0:
@@ -40,7 +41,7 @@ def newtonMethod(f, df, x0, epsilon=1e-6, max_iterations=100, result=None):
     return newtonMethod(f, df, x1, epsilon, max_iterations - 1, result)
 
 # my implementation of secant method
-def secantMethod(f, x0, x1, epsilon=1e-6, max_iterations=100, result=None):
+def secantMethod(f, x0, x1, epsilon=10e-6, max_iterations=100, result=None):
     if result is None:
         result = []
     if max_iterations == 0:
@@ -55,7 +56,7 @@ def secantMethod(f, x0, x1, epsilon=1e-6, max_iterations=100, result=None):
         return result
     
     result.append((len(result) + 1, x0, x1, x2, fx2))
-    if abs(x2 - x1) < epsilon or abs(fx2) < epsilon:
+    if abs(x2 - x1) < epsilon:
         return result
     return secantMethod(f, x1, x2, epsilon, max_iterations - 1, result)
 
@@ -76,21 +77,21 @@ given_functions = [
 question_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 def print_table(f, x0, df=None, x1=None, b=None, method_name="newton"):
     if method_name == "bisection":
-        print(f"\nBisection Method\n{'Iteration':^15}{'a':^15}{'b':^15}{'c':^15}{'f(c)':^15}")
+        print(f"\nBisection Method (root = c)\n{'Iteration':^15}{'a':^15}{'b':^15}{'c':^15}{'f(c)':^15}")
         list_of_results = bisectionMethod(f, x0, b)
         for i, a, b, c, fc in list_of_results:
             print(f"{i:^15}{a:<15.7f}{b:<15.7f}{c:<15.7f}{fc:<15.7f}")
-        if len(list_of_results) == 0 or not list_of_results[-1][4] < 10e-6:
+        if len(list_of_results) == 0:
             print(f"{'No Roots':^70}")
     elif method_name == "secant":
-        print(f"\nSecant's Method\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'x2':^15}{'f(x2)':^15}")
+        print(f"\nSecant's Method (root = x2)\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'x2':^15}{'f(x2)':^15}")
         list_of_results = secantMethod(f, x0, x1)
         for i, x0, x1, x2, fx2 in list_of_results:
             print(f"{i:^15}{x0:<15.7f}{x1:<15.7f}{x2:<15.7f}{fx2:<15.7f}")
         if len(list_of_results) == 0 or not list_of_results[-1][4] < 10e-6:
             print(f"{'No Roots':^70}")
     elif method_name == "newton":
-        print(f"\nNewton's Method\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'f(x1)':^15}")
+        print(f"\nNewton's Method (root = x1)\n{'Iteration':^15}{'x0':^15}{'x1':^15}{'f(x1)':^15}")
         list_of_results = newtonMethod(f, df, x0)
         for i, x0, x1, fx1 in list_of_results:
             print(f"{i:^15}{x0:<15.7f}{x1:<15.7f}{fx1:<15.7f}")

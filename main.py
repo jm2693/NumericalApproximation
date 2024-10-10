@@ -72,9 +72,10 @@ given_functions = [
     (lambda x: x**3 - 2, lambda x: 3*x**2, 1, 1.5, 1.3),
     (lambda x: x + math.tan(x), lambda x: 1 + (1 / math.cos(x))**2, 3, 3.5, 1.8),
     (lambda x: 2 - x**(-1)*math.log(x), lambda x: (math.log(x) - 1) / x**2, 1/3, 0.4, 5),
+    (lambda x: (7200/x) * (1 - ( 1 + (x/12))**(-360)) - 150000, 20, 0.02590, 0, 0.02595)
 ]
 
-question_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+question_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
 def print_table(f, x0, df=None, x1=None, b=None, method_name="newton"):
     if method_name == "bisection":
         print(f"\nBisection Method (root = c)\n{'Iteration':^15}{'a':^15}{'b':^15}{'c':^15}{'f(c)':^15}")
